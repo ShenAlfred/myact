@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <div class="act-detail block-area">
+        <div class="act-detail block-area" v-more-expand>
             <div class="act-d-inner">
                 <p>5月28日-7月9日在北京蓝色港湾央美术馆进行了Little Inventors儿童创意展北京站的展出。北京展览刚刚结束，Little Inventors又马不停蹄将天马行空的儿童创意作品带去了西安。</p>
                 <img src="../../assets/demo/1.jpeg" alt="">
@@ -23,7 +23,9 @@
                 <img src="../../assets/demo/3.jpeg" alt="">
                 <p>电吹面风装置：这是一个可以戴在头上的蓝色的帽子，帽子上还有一个强力电风扇。当你吃的面条太烫的时候，可以打开电风扇，把面条快速的吹凉，上面还有一个用来照明的手电筒。</p>
             </div>
-            <div class="more-expand">更多</div>
+            <div class="more-expand">
+                点击查看
+            </div>
         </div>
         <div class="act-info block-area">
             <div class="act-line">
@@ -83,6 +85,7 @@
     .more-expand {
         padding: 5px 0;
         width: 100%;
+        font-size: 14px;
         text-align: center;
         background: #fff;
     }
@@ -123,7 +126,26 @@
     export default {
         mounted: function() {
             const applyId = this.$route.params.applyId;
-            console.log(applyId)
+        },
+        directives: {
+            moreExpand: {
+                bind: (el, binding, vnode) => {
+                    const more = el.querySelector(".more-expand");
+                    const art = el.querySelector(".act-d-inner");
+                    var isExpand = false;
+                    more.addEventListener('touchstart', function(ev) {
+                        if(isExpand) {
+                            art.style.height = "80px";
+                            more.innerText = "点击查看";
+                            isExpand = false;
+                        }else {
+                            art.style.height = 'auto';
+                            more.innerText = "点击收起"
+                            isExpand = true
+                        }
+                    });
+                }
+            }
         }
     }
 </script>

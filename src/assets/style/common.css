@@ -64,3 +64,7 @@ time, mark, audio, video {
   float: left;
 }
 
+.fr {
+  float: right;
+}
+
