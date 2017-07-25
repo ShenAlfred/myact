@@ -1,21 +1,39 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
-import Home from '@/components/Home/Home.com'
+import config from '@/config'
 
 Vue.use(Router)
 
-export default new Router({
-  mode: 'history',
-  routes: [
+const routes = [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'applyList',
+      meta: {
+        title: '活动列表',
+      },
+      component: resolve => require(['@/components/Apply/List'], resolve)
     },
     {
-      path: '/Home',
-      component: Home
+        path: '/applyDetail',
+        name: 'applyDetail',
+        meta: {
+            title: '活动详情',
+        },
+        component: resolve => require(['@/components/Apply/Detail'], resolve)
+    },
+    {
+      path: '/applyDetail/:applyId',
+      name: 'applyDetail',
+      meta: {
+        title: '活动详情',
+      },
+      component: resolve => require(['@/components/Apply/Detail'], resolve)
     }
-  ]
-})
+  ];
+
+let router = new Router({
+  mode: config.isDevEnv ? 'history' : 'hash',
+  routes: routes
+});
+
+export default router;

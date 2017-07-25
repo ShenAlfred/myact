@@ -11,15 +11,22 @@ export default {
 </script>
 
 <style>
-@import 'assets/style/myanimate.scss';
-@import 'assets/FontAwesome-4.7.0/css/font-awesome.min.css';
+    @import 'assets/style/myanimate.scss';
+    @import 'assets/style/common.css';
+    @import 'assets/FontAwesome-4.7.0/css/font-awesome.min.css';
+
+body, html {
+    background: #fff;
+}
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+    color: #2c3e50;
+    background: #fff;
+    height: 100%;
+    -webkit-overflow-scrolling : touch;
+}
+.load-more {
+    padding: 15px 0;
+    text-align: center;
 }
 </style>
