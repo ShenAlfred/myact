@@ -11,15 +11,14 @@ const routes = [
       meta: {
         title: '活动列表',
       },
-      component: resolve => require(['@/components/Apply/List'], resolve)
-    },
-    {
-        path: '/applyDetail',
-        name: 'applyDetail',
-        meta: {
-            title: '活动详情',
-        },
-        component: resolve => require(['@/components/Apply/Detail'], resolve)
+      component: resolve => require(['@/components/Apply/List'], resolve),
+        beforeEnter: (to, from, next) => {
+          if(to.query.applyId) {
+              next({name: 'applyDetail', params: {applyId: to.query.applyId}})
+          }else {
+              next();
+          }
+        }
     },
     {
       path: '/applyDetail/:applyId',
@@ -33,7 +32,14 @@ const routes = [
 
 let router = new Router({
   mode: config.isDevEnv ? 'history' : 'hash',
-  routes: routes
+  routes: routes,
+    scrollBehavior: (to, from, savedPosition) => {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return { x: 0, y: 0 }
+        }
+    }
 });
 
 export default router;

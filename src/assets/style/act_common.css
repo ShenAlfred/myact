@@ -1,0 +1,29 @@
+.act-state {
+    display: inline-block;
+    vertical-align: middle;
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+}
+.act-state.ing {
+    background: #72ed69;
+}
+.act-state.end {
+    background: #ccc;
+}
+.act-state.un_start {
+    background: #ff3e40;
+}
+.act-f-text {
+    padding:0 5px;
+    color: #666;
+    font-size: 14px;
+}
+.more {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}

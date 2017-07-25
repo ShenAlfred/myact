@@ -13,16 +13,16 @@ export default {
 <style>
     @import 'assets/style/myanimate.scss';
     @import 'assets/style/common.css';
+    @import 'assets/style/act_common.css';
     @import 'assets/FontAwesome-4.7.0/css/font-awesome.min.css';
 
 body, html {
-    background: #fff;
+    background: #ebebeb;
 }
 
 #app {
     color: #2c3e50;
-    background: #fff;
-    height: 100%;
+    background: #ebebeb;
     -webkit-overflow-scrolling : touch;
 }
 .load-more {
