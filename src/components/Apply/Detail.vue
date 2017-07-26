@@ -1,16 +1,17 @@
 <template>
     <div class="apply-wrap">
         <div class="block-area">
-            <h1 class="apply-title">这个夏天，带上小朋友们玩点不一样的--Little Inventors家长创意征集令来咯！</h1>
+            <h1 class="apply-title">
+              {{ detail.title }}
+            </h1>
             <h2 class="apply-f-title">
-                这个夏天，带上小朋友们玩点不一样的（副标题）
+                {{ detail.subTitle }}
             </h2>
             <div>
-                <span class="act-state ing"></span>
-                <span class="act-f-text">活动进行中</span>
-                <div class="fr">
-                    <span class="act-f-text">已报名: 10/100</span>
-                </div>
+                <span class="act-state" :class="{un_start:detail.status==1, ing:detail.status==2, end:detail.status==3}"></span>
+                <span class="act-f-text">
+                  {{ detail.showInfo }}
+                </span>
             </div>
         </div>
         <div class="act-detail block-area" v-more-expand>
@@ -123,9 +124,40 @@
     }
 </style>
 <script>
+    import api from '../../api'
+    import config from '../../config'
+
     export default {
+        data() {
+            return {
+                query: {
+                    id: 0
+                },
+                detail: {}
+            }
+        },
         mounted: function() {
-            const applyId = this.$route.params.applyId;
+            this.query.id = this.$route.params.applyId;
+            this.fetchData(this.query);
+        },
+        methods: {
+            fetchData: function(query) {
+                var that = this;
+                this.$ajax.post(config.baseUrl + api.detail, query)
+                    .then(function(result) {
+                        var data = result.data.data;
+                        if(data) {
+                            that.detail = data;
+                            if(data.status == 1) {
+                              that.detail.showInfo = '即将开始';
+                            }else if(data.status == 2) {
+                              that.detail.showInfo = '正在进行';
+                            }else {
+                              that.detail.showInfo = '已过期';
+                            }
+                        }
+                });
+            }
         },
         directives: {
             moreExpand: {
