@@ -9,25 +9,58 @@
           </tab-item>
         </tab>
         <div class="act-lists">
-            <div v-for="(item, $index) in lists">
+            <div v-show="currentState == 0">
+              <div v-for="(item, $index) in lists.all">
                 <flexbox class="act-item" @click.native="goDetail(item.id)">
-                    <flexbox-item>
-                        <h1 class="ellipsis">
-                            {{item.title}}
-                        </h1>
-                        <div>
-                            <span class="act-state" :class="{un_start:item.status==1, ing:item.status==2, end:item.status==3}"></span>
-                            <span class="act-f-text">
+                  <flexbox-item>
+                    <h1 class="ellipsis">
+                      {{item.title}}
+                    </h1>
+                    <div>
+                      <span class="act-state" :class="{un_start:item.status==1, ing:item.status==2, end:item.status==3}"></span>
+                      <span class="act-f-text">
                                 {{ item.showInfo }}
                             </span>
-                        </div>
-                    </flexbox-item>
-                    <div class="is-link">
-                        <i class="fa fa-chevron-right"></i>
                     </div>
+                  </flexbox-item>
+                  <div class="is-link">
+                    <i class="fa fa-chevron-right"></i>
+                  </div>
                 </flexbox>
+              </div>
+              <a href="javascript:;" v-show="isData.all" class="more" v-on:click="getMore()">
+                点击加载更多
+              </a>
+              <div class="more" v-if="!isData.all">
+                没有更多的活动了!
+              </div>
             </div>
-            <a href="javascript:;" class="more">点击加载更多</a>
+            <div v-show="currentState ==1">
+              <div v-for="(item, $index) in lists.my">
+                <flexbox class="act-item" @click.native="goDetail(item.id)">
+                  <flexbox-item>
+                    <h1 class="ellipsis">
+                      {{item.title}}
+                    </h1>
+                    <div>
+                      <span class="act-state" :class="{un_start:item.status==1, ing:item.status==2, end:item.status==3}"></span>
+                      <span class="act-f-text">
+                          {{ item.showInfo }}
+                      </span>
+                    </div>
+                  </flexbox-item>
+                  <div class="is-link">
+                    <i class="fa fa-chevron-right"></i>
+                  </div>
+                </flexbox>
+              </div>
+              <a href="javascript:;" v-show="isData.my" class="more" v-on:click="getMore()">
+                点击加载更多
+              </a>
+              <div class="more" v-if="!isData.my">
+                没有更多的活动了!
+              </div>
+            </div>
         </div>
     </div>
 </template>
@@ -63,55 +96,139 @@
     export default {
         data() {
             return {
-                query: {                                                 //请求提交参数对象
-                    currentState: 0,
-                    pageNumber: 1
+                currentState: 0,
+                query: {                               //请求提交参数对象
+                    all: {
+                      currentState: this.currentState,
+                      pageNumber: 1
+                    },
+                    my: {
+                      currentState: this.currentState,
+                      pageNumber: 1
+                    }
                 },
-                lists: []
+                lists: {
+                    all: [],
+                    my: []
+                },
+                recodePage: {
+                    all: 1,
+                    my: 1
+                },
+                isData: {                               //是否有數據
+                    all: false,
+                    my: false
+                },
+                params: {
+                  startTime: "",
+                  endTime: "",
+                  searchContent: "",
+                  status: 1,         		                      //1是我参与的, 0是所有的
+                  order:"desc",
+                  orderColumn:"startTime"
+                }
             }
         },
         methods: {
             goDetail:function(id) {
                 this.$router.push({ name: 'applyDetail', params: { applyId: id } })
             },
-            fetchData: function(status, pagenumber) {
+            getMore: function() {
                 var that = this;
-                this.lists = [];
+                if(this.query.currentState == 0) {
+                    this.recodePage.all++;
+                }else {
+                    this.recodePage.my++;
+                }
+                this.params.status = that.query.currentState;
+                this.$ajax.post(config.baseUrl + api.getList, {
+                    pageSize: 10,   		                                                                              // 每页显示条数
+                    pageNo: this.query.currentState == 0 ? this.recodePage.all : this.recodePage.my,				          // 需要获取的页数
+                    params: this.params
+                }).then(function(res) {
+                    if(res.data.data.length) {
+                        var data = res.data.data;
+                        that.handleDataActiveState(data, that, that.query.currentState);
+                        that.query.currentState == 0 ? that.isData.all = true : that.isData.my = true;
+                        that.setIsData(that, true, that.query.currentState);
+                    }else {
+                        if(that.query.currentState == 0) {
+                          that.isData.all = false;
+                          that.recodePage.all--;
+                          that.$store.state.all.pageNumber = that.recodePage.all;
+                        }else {
+                          that.isData.my = false;
+                          that.recodePage.my --;
+                          that.$store.state.my.pageNumber = that.recodePage.my;
+                        }
+                    }
+                  })
+            },
+            fetchData: function(status) {
+                var that = this;
+                this.currentState = status;
+                status == 0 ? that.lists.all = [] : that.lists.my = [];
                 this.query = {
                   currentState: status,
-                  pageNumber: pagenumber ? pagenumber : 1
+                  pageNumber: 1
                 };
-                this.$ajax.post(config.baseUrl + api.getList, {
-                    pageSize: 10,   		                      // 每页显示条数
-                    pageNo: that.query.pageNumber,				          // 需要获取的页数
-                    params: {
-                      startTime: "",
-                      endTime: "",
-                      searchContent: "",
-                      status: that.query.currentState,         		//1是我参与的, 0是所有的
-                      order:"desc",
-                      orderColumn:"startTime"
-                    }
+                if(status == 0) {
+                    this.params.status = that.query.currentState;
+                    this.$ajax.post(config.baseUrl + api.getList, {
+                      pageSize: 10,   		                                                // 每页显示条数
+                      pageNo: that.query.pageNumber,				                              // 需要获取的页数
+                      params: this.params
+                    }).then(function(res) {
+                      if(res.data.data.length) {
+                        var data = res.data.data;
+                        that.handleDataActiveState(data, that, status);
+                        that.setIsData(that, true, status);
+                      }else {
+                        that.setIsData(that, false, status);
+                      }
+                    });
+                } else if(status == 1) {
+                    this.params.status = this.query.currentState;
+                    this.$ajax.post(config.baseUrl + api.getList, {
+                        pageSize: 10,   		                                                // 每页显示条数
+                        pageNo: that.query.pageNumber,				                              // 需要获取的页数
+                        params: this.params
                     }).then(function(res) {
                         if(res.data.data.length) {
-                            var data = res.data.data;
-                            for(var i=0; i < data.length; i++) {
-                                if(data[i].status == 1) {
-                                    data[i].showInfo = '即将开始';
-                                }else if(data[i].status == 2) {
-                                    data[i].showInfo = '正在进行';
-                                }else {
-                                    data[i].showInfo = '已过期';
-                                }
-                                that.lists.push(data[i]);
-                            }
+                          var data = res.data.data;
+                          that.handleDataActiveState(data, that, status);
+                          that.setIsData(that, true, status);
+                        }else {
+                          that.setIsData(that, false, status);
                         }
-                    })
+                    });
+                }
+            },
+            handleDataActiveState: function(data, context, status) {
+              for(var i=0; i < data.length; i++) {
+                if(data[i].status == 1) {
+                  data[i].showInfo = '即将开始';
+                }else if(data[i].status == 2) {
+                  data[i].showInfo = '正在进行';
+                }else {
+                  data[i].showInfo = '已过期';
+                }
+                status == 0 ? context.lists.all.push(data[i]) : context.lists.my.push(data[i]);
               }
+              if(status == 0) {
+                context.$store.state.all.lists = context.lists.all;
+                context.$store.state.all.pageNumber = context.recodePage.all;
+              }else {
+                context.$store.state.my.lists = context.lists.my;
+                context.$store.state.my.pageNumber = context.recodePage.my;
+              }
+            },
+            setIsData(context, boolean, status) {
+              status == 0 ? context.isData.all = boolean : context.isData.my = boolean;
+            }
         },
         mounted: function() {
-            const currentState= 0;
-            this.fetchData(currentState);
+            this.fetchData(this.currentState);
         },
         components: {
             Flexbox,

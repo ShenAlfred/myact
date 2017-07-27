@@ -14,16 +14,8 @@
                 </span>
             </div>
         </div>
-        <div class="act-detail block-area" v-more-expand>
-            <div class="act-d-inner">
-                <p>5月28日-7月9日在北京蓝色港湾央美术馆进行了Little Inventors儿童创意展北京站的展出。北京展览刚刚结束，Little Inventors又马不停蹄将天马行空的儿童创意作品带去了西安。</p>
-                <img src="../../assets/demo/1.jpeg" alt="">
-                <p>漏砂鞋：鞋下面有很多触须，当沙子进鞋子里以后，简单的抖一抖，就可以把沙子排到鞋子外面！</p>
-                <img src="../../assets/demo/2.jpeg" alt="">
-                <p>反方向望远镜：走在前面，可以看见后面的很远的东西。</p>
-                <img src="../../assets/demo/3.jpeg" alt="">
-                <p>电吹面风装置：这是一个可以戴在头上的蓝色的帽子，帽子上还有一个强力电风扇。当你吃的面条太烫的时候，可以打开电风扇，把面条快速的吹凉，上面还有一个用来照明的手电筒。</p>
-            </div>
+        <div class="act-detail block-area" v-more-expand="75">
+            <div class="act-d-inner" v-html="detail.content"></div>
             <div class="more-expand">
                 点击查看
             </div>
@@ -31,22 +23,25 @@
         <div class="act-info block-area">
             <div class="act-line">
                 <i class="fa fa-clock-o"></i>
-                <span>开始时间: 2017-07-11&nbsp;10:00</span>
+                <span>开始时间: {{ detail.startTime }}</span>
             </div>
             <div class="act-line">
                 <i class="fa fa-clock-o"></i>
-                <span>结束时间: 2017-08-11&nbsp;18:00</span>
+                <span>结束时间: {{ detail.endTime }}</span>
             </div>
             <div class="act-line">
                 <i class="fa fa-clock-o"></i>
-                <span>报名截止: 2017-07-20&nbsp;18:00</span>
+                <span>报名截止: {{ detail.endJoinTime }}</span>
             </div>
             <div class="act-line">
                 <i class="fa fa-map-marker"></i>
-                <span>活动地址: （上海闵行）虹桥天地购物中心3楼</span>
+                <span>活动地址: {{ detail.address }}</span>
             </div>
         </div>
-        <a href="javascript:;" class="apply-btn able">点击报名</a>
+        <a href="javascript:;" class="apply-btn" :class="{able:status==0, cancel:status==1, unable:(detail.status==2||detail.status==3) }" v-on:click="join()">
+          {{status==1 ? '取消报名' : '点击报名'}}
+        </a>
+        <toast v-bind:tip-text="tipsText" v-model="showTips" close-time="5"></toast>
     </div>
 </template>
 <style scoped>
@@ -80,7 +75,7 @@
     }
     .act-d-inner {
         position: relative;
-        height: 80px;
+        height: 75px;
         overflow: hidden;
     }
     .more-expand {
@@ -126,6 +121,7 @@
 <script>
     import api from '../../api'
     import config from '../../config'
+    import Toast from '@/components/custom/toast.com'
 
     export default {
         data() {
@@ -133,7 +129,12 @@
                 query: {
                     id: 0
                 },
-                detail: {}
+                detail: {},
+                flag: true,                         //频繁操作
+                status: 0,                          //是否报名
+                showTips: false,                                                                      //是否显示toast提示框
+                tipsText: "",                                                                          //toast提示框动态提示文本
+                joined: ''
             }
         },
         mounted: function() {
@@ -148,6 +149,8 @@
                         var data = result.data.data;
                         if(data) {
                             that.detail = data;
+                            that.status = that.detail.joined;
+                            that.joined = data.status;
                             if(data.status == 1) {
                               that.detail.showInfo = '即将开始';
                             }else if(data.status == 2) {
@@ -157,6 +160,27 @@
                             }
                         }
                 });
+            },
+            join: function() {
+                var that = this;
+                if(this.joined == 2 || this.joined == 3) {
+                    return;
+                }else {
+                    if(this.flag) {
+                        this.flag = false;
+                        this.$ajax.post(config.baseUrl + api.join, {
+                            activityId: this.query.id,
+                            status: this.status == 0 ? 1 : 0
+                        }).then(function(result) {
+                            if(result.data.code == "0") {
+                                that.status = that.status == 0 ? 1 : 0;
+                                that.flag = true;
+                                that.showTips = true;
+                                that.tipsText = that.status == 0 ? '取消成功': '报名成功';
+                            }
+                        });
+                    }
+                }
             }
         },
         directives: {
@@ -167,7 +191,7 @@
                     var isExpand = false;
                     more.addEventListener('touchstart', function(ev) {
                         if(isExpand) {
-                            art.style.height = "80px";
+                            art.style.height = binding.value+"px";
                             more.innerText = "点击查看";
                             isExpand = false;
                         }else {
@@ -178,6 +202,9 @@
                     });
                 }
             }
-        }
+        },
+      components: {
+        Toast
+      }
     }
 </script>

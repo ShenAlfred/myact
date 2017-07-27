@@ -7,12 +7,17 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 0
+    all: {
+      lists: [],
+      pageNumber: 1
+    },
+    my: {
+      lists: [],
+      pageNumber: 1
+    }
   },
   mutations: {
-    increment (state) {
-      state.count++
-    }
+
   }
 })
 
