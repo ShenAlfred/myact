@@ -1,10 +1,10 @@
 <template>
     <div>
         <tab class="act-tab" active-color="#fe4e52">
-          <tab-item selected @on-item-click="fetchData(0)">
+          <tab-item :selected="currentState==0" @on-item-click="fetchData(0)">
               活动列表
           </tab-item>
-          <tab-item @on-item-click="fetchData(1)">
+          <tab-item :selected="currentState==1" @on-item-click="fetchData(1)">
               我的活动
           </tab-item>
         </tab>
@@ -16,11 +16,18 @@
                     <h1 class="ellipsis">
                       {{item.title}}
                     </h1>
-                    <div>
-                      <span class="act-state" :class="{un_start:item.status==1, ing:item.status==2, end:item.status==3}"></span>
-                      <span class="act-f-text">
-                                {{ item.showInfo }}
-                            </span>
+                    <div class="act-pd-space">
+                      <div class="act-f-text ellipsis" style="display: block;width: 100%;">
+                          <i class="fa fa-map-marker main-color" style="padding-left: 2px;"></i>
+                          <span class="act-f-text">{{item.address}}</span>
+                      </div>
+                      <div class="act-f-text ellipsis" style="display: block;width: 100%;">
+                        <i class="fa fa-clock-o main-color"></i>
+                        <span class="act-f-text">
+                          {{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;&nbsp;
+                          {{ item.showStartTime.hour }}:{{item.showStartTime.min}}至{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
+                        </span>
+                      </div>
                     </div>
                   </flexbox-item>
                   <div class="is-link">
@@ -65,6 +72,9 @@
     </div>
 </template>
 <style scoped>
+    .act-pd-space {
+      padding: 5px;
+    }
     .is-link {
       width: 30px;
       text-align: center;
@@ -86,12 +96,14 @@
     .act-item h1 {
         font-size: 16px;
         color: #333;
+        font-weight: normal;
     }
 </style>
 <script>
     import {Flexbox, FlexboxItem, Tab, TabItem} from 'vux';
     import api from '../../api'
     import config from '../../config'
+    import util from '../../util'
 
     export default {
         data() {
@@ -167,6 +179,7 @@
                 this.currentState = status;
                 status == 0 ? that.lists.all = [] : that.lists.my = [];
                 status == 0 ? this.recodePage.all = 1 : this.recodePage.my = 1;
+                this.$store.commit('setCurrentIndex', status);
                 this.query = {
                   currentState: status,
                   pageNumber: 1
@@ -212,6 +225,8 @@
                 }else {
                   data[i].showInfo = '已过期';
                 }
+                data[i].showStartTime = util.handleTime(data[i].startTime);
+                data[i].showEndTime = util.handleTime(data[i].endTime);
                 status == 0 ? context.lists.all.push(data[i]) : context.lists.my.push(data[i]);
               }
             },
@@ -220,6 +235,7 @@
             }
         },
         mounted: function() {
+            this.currentState = this.$store.getters.getCurrentIndex ? this.$store.getters.getCurrentIndex : 0;
             this.fetchData(this.currentState);
         },
         components: {

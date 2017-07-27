@@ -14,24 +14,24 @@
                 </span>
             </div>
         </div>
-        <div class="act-detail block-area" v-more-expand="75">
+        <div class="act-detail block-area">
             <div class="act-d-inner" v-html="detail.content"></div>
-            <div class="more-expand">
-                点击查看
-            </div>
+            <!--<div class="more-expand">-->
+                <!--点击查看-->
+            <!--</div>-->
         </div>
         <div class="act-info block-area">
             <div class="act-line">
                 <i class="fa fa-clock-o"></i>
-                <span>开始时间: {{ detail.startTime }}</span>
+                <span>开始时间: {{detail.showStartTime.year}}-{{detail.showStartTime.month}}-{{detail.showStartTime.date}}&nbsp;&nbsp;{{ detail.showStartTime.hour }}:{{detail.showStartTime.min}}</span>
             </div>
             <div class="act-line">
                 <i class="fa fa-clock-o"></i>
-                <span>结束时间: {{ detail.endTime }}</span>
+                <span>结束时间: {{detail.showStartTime.year}}-{{detail.showStartTime.month}}-{{detail.showStartTime.date}}&nbsp;&nbsp;{{ detail.showEndTime.hour }}:{{detail.showEndTime.min}}</span>
             </div>
             <div class="act-line">
                 <i class="fa fa-clock-o"></i>
-                <span>报名截止: {{ detail.endJoinTime }}</span>
+                <span>报名截止: {{detail.showEndJoinTime.year}}-{{detail.showEndJoinTime.month}}-{{detail.showEndJoinTime.date}}&nbsp;&nbsp;{{ detail.showEndJoinTime.hour }}:{{detail.showEndJoinTime.min}}</span>
             </div>
             <div class="act-line">
                 <i class="fa fa-map-marker"></i>
@@ -75,8 +75,6 @@
     }
     .act-d-inner {
         position: relative;
-        height: 75px;
-        overflow: hidden;
     }
     .more-expand {
         padding: 5px 0;
@@ -93,7 +91,7 @@
         font-size: 14px;
     }
     .act-line {
-        padding: 2px 0;
+        padding: 10px 0;
     }
     .apply-btn {
         position: fixed;
@@ -124,6 +122,7 @@
     import api from '../../api'
     import config from '../../config'
     import Toast from '@/components/custom/toast.com'
+    import util from '../../util'
 
     export default {
         data() {
@@ -160,6 +159,9 @@
                             }else {
                               that.detail.showInfo = '已过期';
                             }
+                            that.detail.showStartTime = util.handleTime(that.detail.startTime);
+                            that.detail.showEndTime = util.handleTime(that.detail.endTime);
+                            that.detail.showEndJoinTime = util.handleTime(that.detail.endJoinTime);
                         }
                 });
             },
