@@ -155,11 +155,9 @@
                         if(that.query.currentState == 0) {
                           that.isData.all = false;
                           that.recodePage.all--;
-                          that.$store.state.all.pageNumber = that.recodePage.all;
                         }else {
                           that.isData.my = false;
                           that.recodePage.my --;
-                          that.$store.state.my.pageNumber = that.recodePage.my;
                         }
                     }
                   })
@@ -168,6 +166,7 @@
                 var that = this;
                 this.currentState = status;
                 status == 0 ? that.lists.all = [] : that.lists.my = [];
+                status == 0 ? this.recodePage.all = 1 : this.recodePage.my = 1;
                 this.query = {
                   currentState: status,
                   pageNumber: 1
@@ -214,13 +213,6 @@
                   data[i].showInfo = '已过期';
                 }
                 status == 0 ? context.lists.all.push(data[i]) : context.lists.my.push(data[i]);
-              }
-              if(status == 0) {
-                context.$store.state.all.lists = context.lists.all;
-                context.$store.state.all.pageNumber = context.recodePage.all;
-              }else {
-                context.$store.state.my.lists = context.lists.my;
-                context.$store.state.my.pageNumber = context.recodePage.my;
               }
             },
             setIsData(context, boolean, status) {

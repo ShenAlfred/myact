@@ -13,8 +13,8 @@ const routes = [
       },
       component: resolve => require(['@/components/Apply/List'], resolve),
         beforeEnter: (to, from, next) => {
-          if(to.query.applyId) {
-              next({name: 'applyDetail', params: {applyId: to.query.applyId}})
+          if(applyId) {
+              next({name: 'applyDetail', params: {applyId: applyId}})
           }else {
               next();
           }
@@ -33,13 +33,13 @@ const routes = [
 let router = new Router({
   mode: config.isDevEnv ? 'history' : 'hash',
   routes: routes,
-    scrollBehavior: (to, from, savedPosition) => {
-        if (savedPosition) {
-            return savedPosition
-        } else {
-            return { x: 0, y: 0 }
-        }
-    }
+  scrollBehavior: (to, from, savedPosition) => {
+      if (savedPosition) {
+          return savedPosition
+      } else {
+          return { x: 0, y: 0 }
+      }
+  }
 });
 
 export default router;

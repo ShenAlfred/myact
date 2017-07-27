@@ -84,6 +84,8 @@
         font-size: 14px;
         text-align: center;
         background: #fff;
+        border: 1px solid #ccc;
+        margin-top: 10px;
     }
     .act-info {
         padding-top: 10px;
