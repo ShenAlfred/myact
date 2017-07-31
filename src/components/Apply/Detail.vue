@@ -153,11 +153,11 @@
                             that.status = that.detail.joined;
                             that.joined = data.status;
                             if(data.status == 1) {
-                              that.detail.showInfo = '即将开始';
+                              that.detail.showInfo = '活动即将开始';
                             }else if(data.status == 2) {
-                              that.detail.showInfo = '正在进行';
+                              that.detail.showInfo = '活动正在进行';
                             }else {
-                              that.detail.showInfo = '已过期';
+                              that.detail.showInfo = '活动已过期';
                             }
                             that.detail.showStartTime = util.handleTime(that.detail.startTime);
                             that.detail.showEndTime = util.handleTime(that.detail.endTime);

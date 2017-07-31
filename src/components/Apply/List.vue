@@ -17,11 +17,11 @@
                       {{item.title}}
                     </h1>
                     <div class="act-pd-space">
-                      <div class="act-f-text ellipsis" style="display: block;width: 100%;">
+                      <div class="act-f-text ellipsis act-line">
                           <i class="fa fa-map-marker main-color" style="padding-left: 2px;"></i>
                           <span class="act-f-text">{{item.address}}</span>
                       </div>
-                      <div class="act-f-text ellipsis" style="display: block;width: 100%;">
+                      <div class="act-f-text ellipsis act-line">
                         <i class="fa fa-clock-o main-color"></i>
                         <span class="act-f-text">
                           {{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;&nbsp;
@@ -49,11 +49,18 @@
                     <h1 class="ellipsis">
                       {{item.title}}
                     </h1>
-                    <div>
-                      <span class="act-state" :class="{un_start:item.status==1, ing:item.status==2, end:item.status==3}"></span>
-                      <span class="act-f-text">
-                          {{ item.showInfo }}
-                      </span>
+                    <div class="act-pd-space">
+                      <div class="act-f-text ellipsis act-line">
+                        <i class="fa fa-map-marker main-color" style="padding-left: 2px;"></i>
+                        <span class="act-f-text">{{item.address}}</span>
+                      </div>
+                      <div class="act-f-text ellipsis act-line">
+                        <i class="fa fa-clock-o main-color"></i>
+                        <span class="act-f-text">
+                            {{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;&nbsp;
+                            {{ item.showStartTime.hour }}:{{item.showStartTime.min}}至{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
+                          </span>
+                      </div>
                     </div>
                   </flexbox-item>
                   <div class="is-link">
@@ -72,12 +79,16 @@
     </div>
 </template>
 <style scoped>
+    .act-line {
+      display: block;
+      width: 100%;
+    }
     .act-pd-space {
       padding: 5px;
     }
     .is-link {
       width: 30px;
-      text-align: center;
+      text-align: right;
       color: #c1c1c1;
     }
     .act-tab {
@@ -218,13 +229,6 @@
             },
             handleDataActiveState: function(data, context, status) {
               for(var i=0; i < data.length; i++) {
-                if(data[i].status == 1) {
-                  data[i].showInfo = '即将开始';
-                }else if(data[i].status == 2) {
-                  data[i].showInfo = '正在进行';
-                }else {
-                  data[i].showInfo = '已过期';
-                }
                 data[i].showStartTime = util.handleTime(data[i].startTime);
                 data[i].showEndTime = util.handleTime(data[i].endTime);
                 status == 0 ? context.lists.all.push(data[i]) : context.lists.my.push(data[i]);
