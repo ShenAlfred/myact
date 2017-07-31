@@ -31,13 +31,13 @@
                       <div class="act-f-text ellipsis act-line">
                         <i class="fa fa-clock-o main-color"></i>
                         <span class="act-f-text">
-                          结束时间:&nbsp;{{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
+                          结束时间:&nbsp;{{item.showEndTime.year}}-{{item.showEndTime.month}}-{{item.showEndTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
                         </span>
                       </div>
                       <div class="act-f-text ellipsis act-line">
                         <i class="fa fa-clock-o main-color"></i>
                         <span class="act-f-text">
-                          截止时间:&nbsp;{{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
+                          截止时间:&nbsp;{{item.showEndJoinTime.year}}-{{item.showEndJoinTime.month}}-{{item.showEndJoinTime.date}}&nbsp;{{ item.showEndJoinTime.hour }}:{{item.showEndJoinTime.min}}
                         </span>
                       </div>
                     </div>
@@ -76,7 +76,7 @@
                       <div class="act-f-text ellipsis act-line">
                         <i class="fa fa-clock-o main-color"></i>
                         <span class="act-f-text">
-                          结束时间:&nbsp;{{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
+                          结束时间:&nbsp;{{item.showEndTime.year}}-{{item.showEndTime.month}}-{{item.showEndTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
                         </span>
                       </div>
                     </div>
@@ -250,7 +250,7 @@
               for(var i=0; i < data.length; i++) {
                 data[i].showStartTime = util.handleTime(data[i].startTime);
                 data[i].showEndTime = util.handleTime(data[i].endTime);
-                data[i].showEndJoinTime = util.handleTime(data[i].showEndJoinTime);
+                data[i].showEndJoinTime = util.handleTime(data[i].endJoinTime);
                 status == 0 ? context.lists.all.push(data[i]) : context.lists.my.push(data[i]);
               }
             },
