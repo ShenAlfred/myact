@@ -79,6 +79,12 @@
                           结束时间:&nbsp;{{item.showEndTime.year}}-{{item.showEndTime.month}}-{{item.showEndTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
                         </span>
                       </div>
+                      <div class="act-f-text ellipsis act-line">
+                        <i class="fa fa-clock-o main-color"></i>
+                        <span class="act-f-text">
+                          截止时间:&nbsp;{{item.showEndJoinTime.year}}-{{item.showEndJoinTime.month}}-{{item.showEndJoinTime.date}}&nbsp;{{ item.showEndJoinTime.hour }}:{{item.showEndJoinTime.min}}
+                        </span>
+                      </div>
                     </div>
                   </flexbox-item>
                   <div class="is-link">
@@ -113,6 +119,7 @@
         position: fixed;
         top: 0;
         width: 100%;
+        z-index: 99;
     }
     .act-lists {
         padding-top: 45px;
