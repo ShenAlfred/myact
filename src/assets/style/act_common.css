@@ -5,14 +5,21 @@
     height: 10px;
     border-radius: 100%;
 }
-.act-state.ing {
+.act-state.ing, .act-state-line.ing {
     background: #72ed69;
 }
-.act-state.end {
+.act-state.end, .act-state-line.end {
     background: #ccc;
 }
-.act-state.un_start {
+.act-state.un_start, .act-state-line.un_start {
     background: #ff3e40;
+}
+.act-state-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 2px;
 }
 .act-f-text {
     padding:0 5px;

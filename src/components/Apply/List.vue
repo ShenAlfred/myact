@@ -12,6 +12,7 @@
             <div v-show="currentState == 0">
               <div v-for="(item, $index) in lists.all">
                 <flexbox class="act-item" @click.native="goDetail(item.id)">
+                  <div class="act-state-line" :class="{un_start:item.status==1, ing:item.status==2, end:item.status==3}"></div>
                   <flexbox-item>
                     <h1 class="ellipsis">
                       {{item.title}}
@@ -24,8 +25,19 @@
                       <div class="act-f-text ellipsis act-line">
                         <i class="fa fa-clock-o main-color"></i>
                         <span class="act-f-text">
-                          {{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;&nbsp;
-                          {{ item.showStartTime.hour }}:{{item.showStartTime.min}}至{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
+                          开始时间:&nbsp;{{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;{{ item.showStartTime.hour }}:{{item.showStartTime.min}}
+                        </span>
+                      </div>
+                      <div class="act-f-text ellipsis act-line">
+                        <i class="fa fa-clock-o main-color"></i>
+                        <span class="act-f-text">
+                          结束时间:&nbsp;{{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
+                        </span>
+                      </div>
+                      <div class="act-f-text ellipsis act-line">
+                        <i class="fa fa-clock-o main-color"></i>
+                        <span class="act-f-text">
+                          截止时间:&nbsp;{{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
                         </span>
                       </div>
                     </div>
@@ -45,6 +57,7 @@
             <div v-show="currentState ==1">
               <div v-for="(item, $index) in lists.my">
                 <flexbox class="act-item" @click.native="goDetail(item.id)">
+                  <div class="act-state-line" :class="{un_start:item.status==1, ing:item.status==2, end:item.status==3}"></div>
                   <flexbox-item>
                     <h1 class="ellipsis">
                       {{item.title}}
@@ -57,9 +70,14 @@
                       <div class="act-f-text ellipsis act-line">
                         <i class="fa fa-clock-o main-color"></i>
                         <span class="act-f-text">
-                            {{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;&nbsp;
-                            {{ item.showStartTime.hour }}:{{item.showStartTime.min}}至{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
-                          </span>
+                          开始时间:&nbsp;{{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;{{ item.showStartTime.hour }}:{{item.showStartTime.min}}
+                        </span>
+                      </div>
+                      <div class="act-f-text ellipsis act-line">
+                        <i class="fa fa-clock-o main-color"></i>
+                        <span class="act-f-text">
+                          结束时间:&nbsp;{{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
+                        </span>
                       </div>
                     </div>
                   </flexbox-item>
@@ -100,6 +118,7 @@
         padding-top: 45px;
     }
     .act-item {
+        position: relative;
         background: #fff;
         margin: 10px 0;
         padding: 10px;
@@ -231,6 +250,7 @@
               for(var i=0; i < data.length; i++) {
                 data[i].showStartTime = util.handleTime(data[i].startTime);
                 data[i].showEndTime = util.handleTime(data[i].endTime);
+                data[i].showEndJoinTime = util.handleTime(data[i].showEndJoinTime);
                 status == 0 ? context.lists.all.push(data[i]) : context.lists.my.push(data[i]);
               }
             },
