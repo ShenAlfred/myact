@@ -25,13 +25,7 @@
                       <div class="act-f-text ellipsis act-line">
                         <i class="fa fa-clock-o main-color"></i>
                         <span class="act-f-text">
-                          开始时间:&nbsp;{{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;{{ item.showStartTime.hour }}:{{item.showStartTime.min}}
-                        </span>
-                      </div>
-                      <div class="act-f-text ellipsis act-line">
-                        <i class="fa fa-clock-o main-color"></i>
-                        <span class="act-f-text">
-                          结束时间:&nbsp;{{item.showEndTime.year}}-{{item.showEndTime.month}}-{{item.showEndTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
+                          活动时间:&nbsp;{{item.showStartTime.month}}/{{item.showStartTime.date}}&nbsp;{{ item.showStartTime.hour }}:{{item.showStartTime.min}}-{{item.showEndTime.month}}/{{item.showEndTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
                         </span>
                       </div>
                       <div class="act-f-text ellipsis act-line">
@@ -70,13 +64,7 @@
                       <div class="act-f-text ellipsis act-line">
                         <i class="fa fa-clock-o main-color"></i>
                         <span class="act-f-text">
-                          开始时间:&nbsp;{{item.showStartTime.year}}-{{item.showStartTime.month}}-{{item.showStartTime.date}}&nbsp;{{ item.showStartTime.hour }}:{{item.showStartTime.min}}
-                        </span>
-                      </div>
-                      <div class="act-f-text ellipsis act-line">
-                        <i class="fa fa-clock-o main-color"></i>
-                        <span class="act-f-text">
-                          结束时间:&nbsp;{{item.showEndTime.year}}-{{item.showEndTime.month}}-{{item.showEndTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
+                          活动时间:&nbsp;{{item.showStartTime.month}}/{{item.showStartTime.date}}&nbsp;{{ item.showStartTime.hour }}:{{item.showStartTime.min}}-{{item.showEndTime.month}}/{{item.showEndTime.date}}&nbsp;{{ item.showEndTime.hour }}:{{item.showEndTime.min}}
                         </span>
                       </div>
                       <div class="act-f-text ellipsis act-line">
