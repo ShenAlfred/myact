@@ -11,6 +11,7 @@ const routes = [
       meta: {
         title: '活动列表',
       },
+      keep_alive: true,
       component: resolve => require(['@/components/Apply/List'], resolve),
         beforeEnter: (to, from, next) => {
           if(applyId) {
@@ -34,11 +35,8 @@ let router = new Router({
   mode: config.isDevEnv ? 'history' : 'hash',
   routes: routes,
   scrollBehavior: (to, from, savedPosition) => {
-      if (savedPosition) {
-          return savedPosition
-      } else {
-          return { x: 0, y: 0 }
-      }
+    to.meta.saved_position = savedPosition;
+    return savedPosition ? {x: 0, y: 0}: '';
   }
 });
 

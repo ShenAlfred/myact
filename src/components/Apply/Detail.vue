@@ -23,11 +23,11 @@
         <div class="act-info block-area">
             <div class="act-line">
                 <i class="fa fa-clock-o"></i>
-                <span>开始时间: {{detail.showStartTime.year}}-{{detail.showStartTime.month}}-{{detail.showStartTime.date}}&nbsp;&nbsp;{{ detail.showStartTime.hour }}:{{detail.showStartTime.min}}</span>
+                <span>开始时间 {{detail.showStartTime.year}}-{{detail.showStartTime.month}}-{{detail.showStartTime.date}}&nbsp;&nbsp;{{ detail.showStartTime.hour }}:{{detail.showStartTime.min}}</span>
             </div>
             <div class="act-line">
                 <i class="fa fa-clock-o"></i>
-                <span>结束时间: {{detail.showStartTime.year}}-{{detail.showStartTime.month}}-{{detail.showStartTime.date}}&nbsp;&nbsp;{{ detail.showEndTime.hour }}:{{detail.showEndTime.min}}</span>
+                <span>结束时间: {{detail.showEndTime.year}}-{{detail.showEndTime.month}}-{{detail.showEndTime.date}}&nbsp;&nbsp;{{ detail.showEndTime.hour }}:{{detail.showEndTime.min}}</span>
             </div>
             <div class="act-line">
                 <i class="fa fa-clock-o"></i>

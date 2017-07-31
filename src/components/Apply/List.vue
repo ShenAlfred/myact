@@ -240,7 +240,22 @@
         },
         mounted: function() {
             this.currentState = this.$store.getters.getCurrentIndex ? this.$store.getters.getCurrentIndex : 0;
-            this.fetchData(this.currentState);
+            if(config.isDevEnv) {
+              const query = {
+                ticket: this.$route.query.ticket
+              };
+              this.$ajax.get(config.baseUrl + "/activity/app", {
+                params: {
+                  ticket: query.ticket
+                }
+              }).then((response) => {
+                this.fetchData(this.currentState);
+              }).catch((response) => {
+
+              });
+            }else {
+              this.fetchData(this.currentState);
+            }
         },
         components: {
             Flexbox,
