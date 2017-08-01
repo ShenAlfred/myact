@@ -31,7 +31,7 @@
                       <div class="act-f-text ellipsis act-line">
                         <i class="fa fa-clock-o main-color"></i>
                         <span class="act-f-text">
-                          截止时间:&nbsp;{{item.showEndJoinTime.year}}-{{item.showEndJoinTime.month}}-{{item.showEndJoinTime.date}}&nbsp;{{ item.showEndJoinTime.hour }}:{{item.showEndJoinTime.min}}
+                          截止时间:&nbsp;{{item.showEndJoinTime.month}}月{{item.showEndJoinTime.date}}日&nbsp;{{ item.showEndJoinTime.hour }}:{{item.showEndJoinTime.min}}
                         </span>
                       </div>
                     </div>
@@ -70,7 +70,7 @@
                       <div class="act-f-text ellipsis act-line">
                         <i class="fa fa-clock-o main-color"></i>
                         <span class="act-f-text">
-                          截止时间:&nbsp;{{item.showEndJoinTime.year}}-{{item.showEndJoinTime.month}}-{{item.showEndJoinTime.date}}&nbsp;{{ item.showEndJoinTime.hour }}:{{item.showEndJoinTime.min}}
+                          截止时间:&nbsp;{{item.showEndJoinTime.month}}月{{item.showEndJoinTime.date}}日&nbsp;{{ item.showEndJoinTime.hour }}:{{item.showEndJoinTime.min}}
                         </span>
                       </div>
                     </div>

@@ -9,10 +9,10 @@ export default {
     var date = new Date(timestamp),
       result = {};
     result.year = date.getFullYear();
-    result.month = date.getMonth()+1 < 10 ? "0"+(date.getMonth()+1) : date.getMonth();
-    result.date = date.getDate() < 10 ? "0"+(date.getDate()+1) : date.getDate();
-    result.hour = date.getHours() < 10 ? "0"+date.getHours() : date.getHours();
-    result.min = date.getMinutes() < 10 ? "0"+date.getMinutes() : date.getMinutes();
+    result.month = date.getMonth()+1;
+    result.date = date.getDate();
+    result.hour = date.getHours();
+    result.min = date.getMinutes();
     return result;
   }
 }
