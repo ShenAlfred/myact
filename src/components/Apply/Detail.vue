@@ -38,7 +38,7 @@
                 <span>活动地址: {{ detail.address }}</span>
             </div>
         </div>
-        <a href="javascript:;" class="apply-btn" :class="{able:status==0, cancel:status==1, unable:(detail.status==2||detail.status==3) }" v-on:click="join()">
+        <a href="javascript:;" class="apply-btn" :class="{able:status==0, cancel:status==1, unable:(detail.status==3 || !enjoyend) }" v-on:click="join()">
           {{status==1 ? '取消报名' : '点击报名'}}
         </a>
         <toast v-bind:tip-text="tipsText" v-model="showTips" close-time="5"></toast>
@@ -135,7 +135,8 @@
                 status: 0,                          //是否报名
                 showTips: false,                                                                      //是否显示toast提示框
                 tipsText: "",                                                                          //toast提示框动态提示文本
-                joined: ''
+                joined: '',
+                enjoyend: ''                                //比较报名截止时间与当前时间的时间戳   小于当前时间意味着不能报名了
             }
         },
         mounted: function() {
@@ -152,6 +153,11 @@
                             that.detail = data;
                             that.status = that.detail.joined;
                             that.joined = data.status;
+                            if(data.endJoinTime < new Date().getTime()) {
+                                that.enjoyend = false;
+                            }else {
+                                that.enjoyend = true;
+                            }
                             if(data.status == 1) {
                               that.detail.showInfo = '活动即将开始';
                             }else if(data.status == 2) {
@@ -167,7 +173,7 @@
             },
             join: function() {
                 var that = this;
-                if(this.joined == 2 || this.joined == 3) {
+                if(this.joined == 3 || !this.enjoyend) {
                     return;
                 }else {
                     if(this.flag) {
