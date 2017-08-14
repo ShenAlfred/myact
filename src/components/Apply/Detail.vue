@@ -130,7 +130,11 @@
                 query: {
                     id: 0
                 },
-                detail: {},
+                detail: {
+                  showStartTime: {},
+                  showEndTime: {},
+                  showEndJoinTime: {}
+                },
                 flag: true,                         //频繁操作
                 status: 0,                          //是否报名
                 showTips: false,                                                                      //是否显示toast提示框
