@@ -14,13 +14,14 @@ const routes = [
       keep_alive: true,
       component: resolve => require(['@/components/Apply/List'], resolve),
         beforeEnter: (to, from, next) => {
-          if(typeof(applyId) == undefined) {
-            var applyId = null;
-          }
-          if(applyId) {
-              next({name: 'applyDetail', params: {applyId: applyId}})
+          if(typeof(applyId) == "undefined") {
+            next();
           }else {
+            if(applyId) {
+              next({name: 'applyDetail', params: {cultureId: applyId}})
+            }else {
               next();
+            }
           }
         }
     },
