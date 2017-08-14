@@ -18,7 +18,7 @@ const routes = [
             next();
           }else {
             if(applyId) {
-              next({name: 'applyDetail', params: {cultureId: applyId}})
+              next({name: 'applyDetail', params: {applyId: applyId}})
             }else {
               next();
             }

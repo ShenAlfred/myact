@@ -144,7 +144,7 @@
             }
         },
         mounted: function() {
-            this.query.id = this.$route.params.cultureId;
+            this.query.id = this.$route.params.applyId;
             this.fetchData(this.query);
         },
         methods: {
