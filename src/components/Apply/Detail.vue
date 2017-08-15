@@ -1,5 +1,6 @@
 <template>
-    <div class="apply-wrap">
+  <div>
+    <div class="apply-wrap" v-if="status_code == 1">
         <div class="block-area">
             <h1 class="apply-title">
               {{ detail.title }}
@@ -38,11 +39,16 @@
                 <span>活动地址: {{ detail.address }}</span>
             </div>
         </div>
-        <a href="javascript:;" class="apply-btn" :class="{able:status==0, cancel:status==1, unable:(detail.status==3 || !enjoyend) }" v-on:click="join()">
-          {{status==1 ? '取消报名' : '点击报名'}}
+        <a href="javascript:;" class="apply-btn" :class="{able:status==0, cancel:(status==1 && detail.status==1), unable:(detail.status==3 || !enjoyend || (detail.status==2 && detail.joined==1)) }" v-on:click="join()">
+          {{ (status==1&& detail.status==1) ? '取消报名' : '点击报名'}}
         </a>
-        <toast v-bind:tip-text="tipsText" v-model="showTips" close-time="5"></toast>
     </div>
+    <toast v-bind:tip-text="tipsText" v-model="showTips" close-time="5"></toast>
+    <div v-if="status_code == 2" style="text-align:center">
+      {{ null_exist }}
+    </div>
+    </div>
+  </div>
 </template>
 <style scoped>
     .apply-wrap {
@@ -139,8 +145,10 @@
                 status: 0,                          //是否报名
                 showTips: false,                                                                      //是否显示toast提示框
                 tipsText: "",                                                                          //toast提示框动态提示文本
-                joined: '',
-                enjoyend: ''                                //比较报名截止时间与当前时间的时间戳   小于当前时间意味着不能报名了
+                joined: '',                                 //活动状态
+                enjoyend: '',                                //比较报名截止时间与当前时间的时间戳   小于当前时间意味着不能报名了
+                null_exist: '',
+                status_code : ''
             }
         },
         mounted: function() {
@@ -152,32 +160,41 @@
                 var that = this;
                 this.$ajax.post(config.baseUrl + api.detail, query)
                     .then(function(result) {
-                        var data = result.data.data;
-                        if(data) {
-                            that.detail = data;
-                            that.status = that.detail.joined;
-                            that.joined = data.status;
-                            if(data.endJoinTime < new Date().getTime()) {
-                                that.enjoyend = false;
-                            }else {
-                                that.enjoyend = true;
-                            }
-                            if(data.status == 1) {
-                              that.detail.showInfo = '活动即将开始';
-                            }else if(data.status == 2) {
-                              that.detail.showInfo = '活动正在进行';
-                            }else {
-                              that.detail.showInfo = '活动已过期';
-                            }
-                            that.detail.showStartTime = util.handleTime(that.detail.startTime);
-                            that.detail.showEndTime = util.handleTime(that.detail.endTime);
-                            that.detail.showEndJoinTime = util.handleTime(that.detail.endJoinTime);
+                        if(result.data.code == "0") {
+                          that.status_code = 1;
+                          var data = result.data.data;
+                          if(data) {
+                              that.detail = data;
+                              that.status = that.detail.joined;               //有没有报名
+                              that.joined = data.status;                      //活动状态
+                              if(data.endJoinTime < new Date().getTime()) {
+                                  that.enjoyend = false;
+                              }else {
+                                  that.enjoyend = true;
+                              }
+                              if(data.status == 1) {
+                                that.detail.showInfo = '活动即将开始';
+                              }else if(data.status == 2) {
+                                that.detail.showInfo = '活动正在进行';
+                              }else {
+                                that.detail.showInfo = '活动已过期';
+                              }
+                              that.detail.showStartTime = util.handleTime(that.detail.startTime);
+                              that.detail.showEndTime = util.handleTime(that.detail.endTime);
+                              that.detail.showEndJoinTime = util.handleTime(that.detail.endJoinTime);
+                          }
+                        }
+                        if(result.data.code == "23") {
+                            that.status_code = 2;
+                            that.null_exist = result.data.msg;
                         }
                 });
             },
             join: function() {
                 var that = this;
-                if(this.joined == 3 || !this.enjoyend) {
+                console.log(this.joined)
+              console.log(this.status)
+                if(this.joined == 3 || !this.enjoyend) {   //已过期
                     return;
                 }else {
                     if(this.flag) {
