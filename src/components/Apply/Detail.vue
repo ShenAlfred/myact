@@ -39,7 +39,7 @@
                 <span>活动地址: {{ detail.address }}</span>
             </div>
         </div>
-        <a href="javascript:;" class="apply-btn" :class="{able:status==0, cancel:(status==1 && detail.status==1), unable:(detail.status==3 || !enjoyend || (detail.status==2 && detail.joined==1)) }" v-on:click="join()">
+        <a href="javascript:;" v-if="detail.status==1" class="apply-btn" :class="{able:status==0, cancel:(status==1 && detail.status==1), unable:(detail.status==3 || !enjoyend || (detail.status==2 && detail.joined==1)) }" v-on:click="join()">
           {{ (status==1&& detail.status==1) ? '取消报名' : '点击报名'}}
         </a>
     </div>
